@@ -19,10 +19,15 @@ export type NutritionFact = {
 
 interface NutritionFactsProps {
   nutrition: NutritionFact[];
+  onNutritionClick: (item: NutritionFact) => void;
+  selectedNutrient: NutritionFact;
 }
 
-const NutritionFacts: React.FC<NutritionFactsProps> = ({ nutrition }) => {
-    console.log(nutrition);
+const NutritionFacts: React.FC<NutritionFactsProps> = ({
+  nutrition,
+  onNutritionClick,
+  selectedNutrient,
+}) => {
   return (
     <div>
       <div className="md:w-96 max-w-full px-3 pt-4 pb-6 bg-white shadow  gap-1">
@@ -45,12 +50,21 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({ nutrition }) => {
               .map((nutrient, index) => {
                 return (
                   <div key={index} className="w-full">
-                    <div className="justify-between items-center inline-flex w-full">
+                    <div
+                      className={`justify-between items-center inline-flex w-full ${
+                        selectedNutrient.nutrient.name === nutrient.nutrient.name
+                          ? "border-[3px] border-[red] pt-1.5 pb-1 pl-2"
+                          : ""
+                      }`}
+                    >
                       <div className="justify-start items-center gap-2 flex">
-                        <label className="text-zinc-700 text-[13px] font-semibold leading-tight underline cursor-pointer">
+                        <label
+                          className="text-zinc-700 text-[13px] font-semibold leading-tight hover:underline cursor-pointer"
+                          onClick={() => onNutritionClick(nutrient)}
+                        >
                           {nutrient.nutrient.name}
                         </label>
-                        <div className="text-zinc-500 text-[13px] font-normal leading-tight tracking-tight underline cursor-pointer">
+                        <div className="text-zinc-500 text-[13px] font-normal leading-tight tracking-tight hover:underline cursor-pointer">
                           {nutrient.nutrient.amount.toFixed(2)} {nutrient.nutrient.unit}
                         </div>
                       </div>
@@ -65,17 +79,27 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({ nutrition }) => {
                       </div>
                     </div>
                     {nutrient.children?.length ? (
-                      <div className="w-[95%] relative ml-auto">
+                      <div className="relative ml-auto">
                         {nutrient.children
                           .filter((item) => item.selected !== false)
                           .sort((a, b) => a.displayOrder - b.displayOrder)
                           ?.map((row, index2) => {
                             return (
-                              <div key={index2}>
+                              <div
+                                key={index2}
+                                className={`w-[95] pl-3 ${
+                                  selectedNutrient.nutrient.name === row.nutrient.name
+                                    ? "border-[3px] border-[red] pt-1.5 pb-1 pl-2"
+                                    : ""
+                                }`}
+                              >
                                 <hr className={`${index2 !== 0 ? "hidden" : "block"} mt-1`} />
-                                <div className="flex justify-between w-[100%] ml-auto my-1">
+                                <div className={`flex justify-between w-[100%] ml-auto my-1 `}>
                                   <div className="flex items-center">
-                                    <p className="prose-bodyMedium text-zinc-500 font-400 text-[14px] cursor-pointer underline">
+                                    <p
+                                      className="prose-bodyMedium text-zinc-500 font-400 text-[14px] cursor-pointer hover:underline"
+                                      onClick={() => onNutritionClick(row)}
+                                    >
                                       {row.nutrient.name}
                                     </p>
                                     <p className="prose-bodyMedium text-zinc-500 font-400 ml-3 text-[14px]">
