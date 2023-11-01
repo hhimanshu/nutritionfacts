@@ -64,7 +64,7 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({
                         >
                           {nutrient.nutrient.name}
                         </label>
-                        <div className="text-zinc-500 text-[13px] font-normal leading-tight tracking-tight hover:underline cursor-pointer">
+                        <div className="text-zinc-500 text-[13px] font-normal leading-tight tracking-tight cursor-pointer">
                           {nutrient.nutrient.amount.toFixed(2)} {nutrient.nutrient.unit}
                         </div>
                       </div>

@@ -4,7 +4,7 @@ import NutritionFacts, { NutritionFact } from "./Components/NutritionFacts";
 import { nutritionFacts } from "./utils/data";
 
 function App() {
-  const [selectedNutrient, setSelectedNutrient] = useState<NutritionFact>(nutritionFacts[0]);
+  const [selectedNutrient, setSelectedNutrient] = useState<NutritionFact>(nutritionFacts[5]);
 
   const onNutritionClick = (nutrient: NutritionFact) => {
     setSelectedNutrient(nutrient);
