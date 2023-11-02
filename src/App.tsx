@@ -1,33 +1,16 @@
-import { useState } from "react";
-import Details from "./Components/Details";
-import NutritionFacts, { NutritionFact } from "./Components/NutritionFacts";
-import { nutritionFacts } from "./utils/data";
+import { createBrowserRouter } from "react-router-dom";
+import Home from "./Pages/Home";
+import SearchResults from "./Pages/SearchResults";
 
-function App() {
-  const [selectedNutrient, setSelectedNutrient] = useState<NutritionFact>(nutritionFacts[5]);
 
-  const onNutritionClick = (nutrient: NutritionFact) => {
-    setSelectedNutrient(nutrient);
-  };
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
 
-  console.log(selectedNutrient);
-
-  return (
-    <div className="h-[auto] flex justify-center items-center">
-      <div className="min-h-[750px] bg-[#c7eafb] p-5 rounded-[20px] m-0 grid grid-cols-[repeat(auto-fit_,minmax(400px,_1fr))] items-start gap-10 w-[60%] mt-12">
-        <div className="h-auto">
-          <Details selectedNutrient={selectedNutrient} />
-        </div>
-        <div className="flex justify-end">
-          <NutritionFacts
-            nutrition={nutritionFacts}
-            onNutritionClick={onNutritionClick}
-            selectedNutrient={selectedNutrient}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default App;
+  {
+    path: "/results/:name",
+    element: <SearchResults />,
+  },
+]);

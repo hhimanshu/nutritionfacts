@@ -49,13 +49,13 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({
               ?.sort((a, b) => a.displayOrder - b.displayOrder)
               .map((nutrient, index) => {
                 return (
-                  <div key={index} className="w-full">
+                  <div key={index} className="w-full relative">
                     <div
                       className={`justify-between items-center inline-flex w-full ${
                         selectedNutrient.nutrient.name === nutrient.nutrient.name
-                          ? "border-[3px] border-[red] pt-1.5 pb-1 pl-2"
+                          ? "border-[3px] border-[red] pt-1.5 pb-1 pl-2 after:content-[''] after:absolute after:block after:h-[5px] after:w-[20%] after:bg-red-500 after:left-[-69px]"
                           : ""
-                      }`}
+                      } `}
                     >
                       <div className="justify-start items-center gap-2 flex">
                         <label
@@ -65,7 +65,7 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({
                           {nutrient.nutrient.name}
                         </label>
                         <div className="text-zinc-500 text-[13px] font-normal leading-tight tracking-tight cursor-pointer">
-                          {nutrient.nutrient.amount.toFixed(2)} {nutrient.nutrient.unit}
+                          {/* {nutrient.nutrient.amount.toFixed(2)} {nutrient.nutrient.unit} */}
                         </div>
                       </div>
                       <div className="justify-end items-center gap-2 flex">
@@ -89,13 +89,25 @@ const NutritionFacts: React.FC<NutritionFactsProps> = ({
                                 key={index2}
                                 className={`w-[95] pl-3 ${
                                   selectedNutrient.nutrient.name === row.nutrient.name
-                                    ? "border-[3px] border-[red] pt-1.5 pb-1 pl-2"
+                                    ? `border-[3px] border-[red] pt-1.5 pb-1 pl-2 after:content-[''] after:absolute after:block after:h-[305px] after:w-[5px] after:bg-red-500 after:left-[-69px] after:top-[-340%] before:content-[''] before:absolute before:block before:h-[5px] before:w-[19%] before:bg-red-500 before:left-[-69px] before:bottom-[20px] 
+                                    ${
+                                      selectedNutrient.nutrient.name === "Dietary fiber"
+                                        ? "after:h-[280px] before:bottom-[44px] after:top-[-336%] "
+                                        : ""
+                                    }
+                                    ${
+                                      selectedNutrient.nutrient.name === "Cholesterol"
+                                        ? "after:h-[125px] after:top-[-203%_!important]"
+                                        : ""
+                                    }
+                                    
+                                    `
                                     : ""
                                 }`}
                               >
                                 <hr className={`${index2 !== 0 ? "hidden" : "block"} mt-1`} />
                                 <div className={`flex justify-between w-[100%] ml-auto my-1 `}>
-                                  <div className="flex items-center">
+                                  <div className="flex items-center relative">
                                     <p
                                       className="prose-bodyMedium text-zinc-500 font-400 text-[14px] cursor-pointer hover:underline"
                                       onClick={() => onNutritionClick(row)}
