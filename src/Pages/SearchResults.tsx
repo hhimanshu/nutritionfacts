@@ -6,7 +6,7 @@ import NutritionFacts, { NutritionFact } from "../Components/NutritionFacts";
 import { nutritionFacts } from "../utils/data";
 import { FoodSearchResult } from "../utils/types";
 import FoodSearch from "../Components/FoodSearchResults/FoodSearchResultsModal";
-import { API_BASE_URL, SEARCH_MIN_CHARACTERS } from "../utils/env";
+import { SEARCH_MIN_CHARACTERS } from "../utils/env";
 
 function SearchResults() {
   const [selectedNutrient, setSelectedNutrient] = useState<NutritionFact>(nutritionFacts[5]);
@@ -36,7 +36,7 @@ function SearchResults() {
           skip,
           limit,
         },
-        url: `${API_BASE_URL}/api/search-food`,
+        url: `/api/search`,
       });
       if (!response.status) {
         throw new Error("Network response was not ok");

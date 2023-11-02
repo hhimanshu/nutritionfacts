@@ -49,6 +49,7 @@ const SearchResults: React.FC<FoodSearchProps> = ({
       {openSearch && (
         <Combobox
           onChange={(result: Food) => {
+            setOpen(false);
             navigate(`/results/${spaceToDashes(result.name)}`);
           }}
         >

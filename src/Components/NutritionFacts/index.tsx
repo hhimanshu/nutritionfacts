@@ -1,4 +1,3 @@
-import React from "react";
 import { getValueRounded } from "../../utils/functions";
 
 export type NutritionFact = {

@@ -62,6 +62,7 @@ export default function FoodSearch({
             <Dialog.Panel className="mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all z-[99999]">
               <Combobox
                 onChange={(result: Food) => {
+                   setOpen(false);
                   navigate(`/results/${spaceToDashes(result.name)}`);
                 }}
               >

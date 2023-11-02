@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import SearchResults from "../Components/FoodSearchResults/FoodSearchResult";
 import { FoodSearchResult } from "../utils/types";
-import { API_BASE_URL, SEARCH_MIN_CHARACTERS } from "../utils/env";
+import { SEARCH_MIN_CHARACTERS } from "../utils/env";
 
 const Home = () => {
   const [isSearching, setIsSearching] = useState(true);
@@ -29,7 +29,7 @@ const Home = () => {
           skip,
           limit,
         },
-        url: `${API_BASE_URL}/api/search-food`,
+        url: `/api/search`,
       });
       if (!response.status) {
         throw new Error("Network response was not ok");

@@ -7,7 +7,6 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ selectedNutrient }) => {
-  console.log(selectedNutrient);
   return (
     <div className="w-full relative">
       <h2 className="text-[#8e52a0] text-[40px] leading-[40px] font-['Museo'] mb-[30px] relative h-full">
