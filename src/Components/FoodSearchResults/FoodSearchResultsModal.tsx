@@ -1,11 +1,10 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { BeakerIcon } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
-import { Food, FoodSearchResult } from "../../utils/types";
-import { FoodSearchTabs } from "../Tabs/FoodSearchTabs";
+import { Fragment } from "react";
+import { FoodSearchResult } from "../../utils/types";
 import { useNavigate } from "react-router-dom";
-import { spaceToDashes } from "../../utils/functions";
+
 
 
 
@@ -19,7 +18,7 @@ type FoodSearchProps = {
   setOpen: (open: boolean) => void;
   query: string;
   setQuery: (query: string) => void;
-  searchResults: FoodSearchResult;
+  searchResults: FoodSearchResult[];
   isSearching: boolean;
 };
 export default function FoodSearch({
@@ -31,7 +30,7 @@ export default function FoodSearch({
   isSearching,
 }: FoodSearchProps) {
     const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = useState("Foods");
+
 
 
   return (
@@ -61,9 +60,9 @@ export default function FoodSearch({
           >
             <Dialog.Panel className="mx-auto max-w-2xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all z-[99999]">
               <Combobox
-                onChange={(result: Food) => {
-                   setOpen(false);
-                  navigate(`/results/${spaceToDashes(result.name)}`);
+                onChange={(result: FoodSearchResult) => {
+                  setOpen(false);
+                  navigate(`/${result.id}`);
                 }}
               >
                 {({ activeOption }) => (
@@ -79,10 +78,8 @@ export default function FoodSearch({
                         onChange={(event) => setQuery(event.target.value)}
                       />
                     </div>
-                    {searchResults.foods.length > 0 && (
-                      <FoodSearchTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
-                    )}
-                    {searchResults.foods.length > 0 && selectedTab === "Foods" && !isSearching && (
+
+                    {searchResults.length > 0 && !isSearching && (
                       <Combobox.Options
                         as="div"
                         static
@@ -96,95 +93,40 @@ export default function FoodSearch({
                           )}
                         >
                           <div className="-mx-2 text-sm text-gray-700 w-full">
-                            {(searchResults.foods.length > 0 ? searchResults.foods : []).map(
-                              (food) => (
-                                <Combobox.Option
-                                  as="div"
-                                  key={food.id}
-                                  value={food}
-                                  className={({ active }) =>
-                                    classNames(
-                                      "flex select-none rounded-md p-2 cursor-pointer",
-                                      active && "bg-gray-100 text-gray-900"
-                                    )
-                                  }
-                                >
-                                  {({ active }) => (
-                                    <>
-                                      <span
-                                        className="ml-3 flex-auto text-left truncate"
-                                        data-testid="food"
-                                      >
-                                        {food.name}
-                                      </span>
-                                      {active && (
-                                        <ChevronRightIcon
-                                          className="ml-3 h-5 w-5 flex-none text-gray-400 hidden"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </>
-                                  )}
-                                </Combobox.Option>
-                              )
-                            )}
+                            {(searchResults.length > 0 ? searchResults : []).map((food) => (
+                              <Combobox.Option
+                                as="div"
+                                key={food.id}
+                                value={food}
+                                className={({ active }) =>
+                                  classNames(
+                                    "flex select-none rounded-md p-2 cursor-pointer",
+                                    active && "bg-gray-100 text-gray-900"
+                                  )
+                                }
+                              >
+                                {({ active }) => (
+                                  <>
+                                    <span
+                                      className="ml-3 flex-auto text-left truncate"
+                                      data-testid="food"
+                                    >
+                                      {food.name}
+                                    </span>
+                                    {active && (
+                                      <ChevronRightIcon
+                                        className="ml-3 h-5 w-5 flex-none text-gray-400 hidden"
+                                        aria-hidden="true"
+                                      />
+                                    )}
+                                  </>
+                                )}
+                              </Combobox.Option>
+                            ))}
                           </div>
                         </div>
                       </Combobox.Options>
                     )}
-                    {searchResults.foodProducts.length > 0 &&
-                      selectedTab !== "Foods" &&
-                      !isSearching && (
-                        <Combobox.Options
-                          as="div"
-                          static
-                          hold
-                          className="flex divide-x divide-gray-100 bg-white w-full rounded-lg"
-                        >
-                          <div
-                            className={classNames(
-                              "max-h-96 flex-auto scroll-py-4 overflow-y-auto px-6 py-4 w-full",
-                              activeOption && "sm:h-80"
-                            )}
-                          >
-                            <div className="-mx-2 text-sm text-gray-700 w-full">
-                              {(searchResults.foodProducts.length > 0
-                                ? searchResults.foodProducts
-                                : []
-                              ).map((food) => (
-                                <Combobox.Option
-                                  as="div"
-                                  key={food.id}
-                                  value={food}
-                                  className={({ active }) =>
-                                    classNames(
-                                      "flex select-none rounded-md p-2 cursor-pointer",
-                                      active && "bg-gray-100 text-gray-900"
-                                    )
-                                  }
-                                >
-                                  {({ active }) => (
-                                    <>
-                                      <span
-                                        className="ml-3 flex-auto text-left truncate"
-                                        data-testid="food"
-                                      >
-                                        {food.name}
-                                      </span>
-                                      {active && (
-                                        <ChevronRightIcon
-                                          className="ml-3 h-5 w-5 flex-none text-gray-400 hidden"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </>
-                                  )}
-                                </Combobox.Option>
-                              ))}
-                            </div>
-                          </div>
-                        </Combobox.Options>
-                      )}
                     {isSearching && query.trim().length > 0 ? (
                       <div role="status" className="px-6 py-14 text-center text-sm sm:px-14">
                         <svg
@@ -205,7 +147,7 @@ export default function FoodSearch({
                         </svg>
                         <span className="sr-only">Loading...</span>
                       </div>
-                    ) : query.trim().length > 0 && searchResults.foods.length === 0 ? (
+                    ) : query.trim().length > 0 && searchResults.length === 0 ? (
                       <div className="px-6 py-14 text-center text-sm sm:px-14">
                         <BeakerIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
                         <p className="mt-4 font-semibold text-gray-900">No ingredient found</p>

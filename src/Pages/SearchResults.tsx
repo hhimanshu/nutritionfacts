@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import Details from "../Components/Details";
 import NutritionFacts, { NutritionFact } from "../Components/NutritionFacts";
 import { nutritionFacts } from "../utils/data";
 import { FoodSearchResult } from "../utils/types";
@@ -15,10 +14,7 @@ function SearchResults() {
   };
   const [isSearching, setIsSearching] = useState(true);
   const [openSearch, setOpenSearch] = useState(false);
-  const [searchResults, setSearchResults] = useState<FoodSearchResult>({
-    foodProducts: [],
-    foods: [],
-  } as FoodSearchResult);
+  const [searchResults, setSearchResults] = useState<FoodSearchResult[]>([]);
   const [query, setQuery] = useState("");
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -59,7 +55,7 @@ function SearchResults() {
     const fetchSearchResults = async () => {
       const results = (
         await fetchSearchFood(inputRef.current?.value ? inputRef.current?.value : query, 0, 10)
-      ).data as FoodSearchResult;
+      ).data as FoodSearchResult[];
       setSearchResults(results);
     };
     fetchSearchResults().then(() => console.log("done"));
@@ -98,17 +94,12 @@ function SearchResults() {
         </div>
       </div>
       <div className="h-[auto] flex justify-center items-center">
-        <div className="min-h-[750px] bg-[#c7eafb] p-5 rounded-[20px] m-0 grid grid-cols-[repeat(auto-fit_,minmax(400px,_1fr))] items-start gap-10 w-[60%] mt-6">
-          <div className="h-auto">
-            <Details selectedNutrient={selectedNutrient} />
-          </div>
-          <div className="flex justify-end">
-            <NutritionFacts
-              nutrition={nutritionFacts}
-              onNutritionClick={onNutritionClick}
-              selectedNutrient={selectedNutrient}
-            />
-          </div>
+        <div className="min-h-[750px] bg-[#c7eafb] p-5 rounded-[20px] m-0 flex justify-center items-start gap-10 w-[60%] mt-6">
+          <NutritionFacts
+            nutrition={nutritionFacts}
+            onNutritionClick={onNutritionClick}
+            selectedNutrient={selectedNutrient}
+          />
         </div>
       </div>
       <FoodSearch

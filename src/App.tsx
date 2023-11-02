@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/results/:name",
+    path: "/:id",
     element: <SearchResults />,
   },
 ]);

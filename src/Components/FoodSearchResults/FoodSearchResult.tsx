@@ -2,11 +2,10 @@
 import { Combobox } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import { BeakerIcon } from "@heroicons/react/24/outline";
-import { useEffect, useRef, useState } from "react";
-import { Food, FoodSearchResult } from "../../utils/types";
-import { FoodSearchTabs } from "../Tabs/FoodSearchTabs";
+import { useEffect, useRef } from "react";
+import { FoodSearchResult } from "../../utils/types";
 import { useNavigate } from "react-router-dom";
-import { spaceToDashes } from "../../utils/functions";
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function classNames(...classes: any[]) {
@@ -16,7 +15,7 @@ function classNames(...classes: any[]) {
 type FoodSearchProps = {
   setOpen: (open: boolean) => void;
   query: string;
-  searchResults: FoodSearchResult;
+  searchResults: FoodSearchResult[];
   isSearching: boolean;
   openSearch: boolean;
 };
@@ -29,7 +28,6 @@ const SearchResults: React.FC<FoodSearchProps> = ({
   openSearch,
 }) => {
   const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = useState("Foods");
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,17 +46,14 @@ const SearchResults: React.FC<FoodSearchProps> = ({
     <div className="block w-full max-w-full absolute z-[999999] border shadow-lg rounded" ref={ref}>
       {openSearch && (
         <Combobox
-          onChange={(result: Food) => {
+          onChange={(result: FoodSearchResult) => {
             setOpen(false);
-            navigate(`/results/${spaceToDashes(result.name)}`);
+            navigate(`/${result.id}`);
           }}
         >
           {({ activeOption }) => (
             <div className="bg-white w-full mt-2 rounded-xl">
-              {searchResults.foods.length > 0 && (
-                <FoodSearchTabs setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
-              )}
-              {searchResults.foods.length > 0 && selectedTab === "Foods" && !isSearching && (
+              {searchResults.length > 0 && !isSearching && (
                 <Combobox.Options
                   as="div"
                   static
@@ -72,58 +67,7 @@ const SearchResults: React.FC<FoodSearchProps> = ({
                     )}
                   >
                     <div className="-mx-2 text-sm text-gray-700 w-full">
-                      {(searchResults.foods.length > 0 ? searchResults.foods : []).map((food) => (
-                        <Combobox.Option
-                          as="div"
-                          key={food.id}
-                          value={food}
-                          className={({ active }) =>
-                            classNames(
-                              "flex select-none rounded-md p-2 cursor-pointer",
-                              active && "bg-gray-100 text-gray-900"
-                            )
-                          }
-                        >
-                          {({ active }) => (
-                            <>
-                              <span
-                                className="ml-3 flex-auto text-left truncate"
-                                data-testid="food"
-                              >
-                                {food.name}
-                              </span>
-                              {active && (
-                                <ChevronRightIcon
-                                  className="ml-3 h-5 w-5 flex-none text-gray-400 hidden"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </>
-                          )}
-                        </Combobox.Option>
-                      ))}
-                    </div>
-                  </div>
-                </Combobox.Options>
-              )}
-              {searchResults.foodProducts.length > 0 && selectedTab !== "Foods" && !isSearching && (
-                <Combobox.Options
-                  as="div"
-                  static
-                  hold
-                  className="flex divide-x divide-gray-100 bg-white w-full rounded-lg"
-                >
-                  <div
-                    className={classNames(
-                      "max-h-96 flex-auto scroll-py-4 overflow-y-auto px-6 py-4 w-full",
-                      activeOption && "sm:h-80"
-                    )}
-                  >
-                    <div className="-mx-2 text-sm text-gray-700 w-full">
-                      {(searchResults.foodProducts.length > 0
-                        ? searchResults.foodProducts
-                        : []
-                      ).map((food) => (
+                      {(searchResults.length > 0 ? searchResults : []).map((food) => (
                         <Combobox.Option
                           as="div"
                           key={food.id}
@@ -177,7 +121,7 @@ const SearchResults: React.FC<FoodSearchProps> = ({
                   </svg>
                   <span className="sr-only">Loading...</span>
                 </div>
-              ) : query.trim().length > 0 && searchResults.foods.length === 0 ? (
+              ) : query.trim().length > 0 && searchResults.length === 0 ? (
                 <div className="px-6 py-14 text-center text-sm sm:px-14">
                   <BeakerIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
                   <p className="mt-4 font-semibold text-gray-900">No ingredient found</p>

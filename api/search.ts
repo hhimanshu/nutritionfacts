@@ -24,7 +24,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
           skip: skip,
           limit: limit,
         }),
-        url: `${SEARCH_RECIPE_API_URL}/bettermenu/search`,
+        url: `${SEARCH_RECIPE_API_URL}/search`,
       });
 
       if (!res.status) {

@@ -8,16 +8,10 @@ import { SEARCH_MIN_CHARACTERS } from "../utils/env";
 const Home = () => {
   const [isSearching, setIsSearching] = useState(true);
   const [openSearch, setOpenSearch] = useState(false);
-  const [searchResults, setSearchResults] = useState<FoodSearchResult>({
-    foodProducts: [],
-    foods: [],
-  } as FoodSearchResult);
+  const [searchResults, setSearchResults] = useState<FoodSearchResult[]>([]);
   const [query, setQuery] = useState("");
-
   const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+
 
   const fetchSearchFood = async (search: string, skip: number, limit: number) => {
     setIsSearching(true);
@@ -52,22 +46,31 @@ const Home = () => {
     const fetchSearchResults = async () => {
       const results = (
         await fetchSearchFood(inputRef.current?.value ? inputRef.current?.value : query, 0, 10)
-      ).data as FoodSearchResult;
+      ).data as FoodSearchResult[];
       setSearchResults(results);
     };
     fetchSearchResults().then(() => console.log("done"));
   }, [query, inputRef.current?.value]);
+
+
+    useEffect(() => {
+      inputRef.current?.focus();
+    }, []);
+
   return (
     <div className="bg-slate-50 h-screen justify-center flex items-center">
       <div className="w-1/3 relative -mt-[20rem]">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mb-2">
           <img src="/logo.svg" className="w-[200px] h-[200px]" />
         </div>
         <div className="w-full shadow">
           <label htmlFor="search" className="sr-only">
             Search
           </label>
-          <div className="relative text-gray-400 focus-within:text-gray-600">
+          <div
+            className="relative text-gray-400 focus-within:text-gray-600"
+            onClick={() => setOpenSearch(true)}
+          >
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
             </div>

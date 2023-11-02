@@ -1,3 +1,5 @@
+import { NutritionFact } from "../Components/NutritionFacts";
+
 export type Portion = {
   amount: number;
   gramWeight: number;
@@ -6,12 +8,7 @@ export type Portion = {
 };
 
 export interface FoodSearchResult {
-  foods: { id: string; name: string; portions?: Portion[] }[];
-  foodProducts: { id: string; name: string; portions?: Portion[] }[];
-}
-
-export interface Food {
   id: string;
   name: string;
-  portions?: Portion[];
+  nutrition: NutritionFact[];
 }
