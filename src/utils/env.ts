@@ -1,0 +1,1 @@
+export const SEARCH_MIN_CHARACTERS = import.meta.env.VITE_SEARCH_RECIPE_QUERY_NO;
